@@ -28,9 +28,15 @@ class User(UserMixin, db.Model):
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=True)
-    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    # Add foreign key to link events to users
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('events', lazy=True))
+
+    def __repr__(self):
+        return f"Event('{self.title}', '{self.date}')"
 
 
 @login_manager.user_loader

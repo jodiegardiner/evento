@@ -111,4 +111,19 @@ def create_admin():
     admin_password = "admin123"  # Replace with your desired admin password
 
     # Check if the admin user already exists
-    admin = User.query
+    admin = User.query.filter_by(username=admin_username).first()
+    if not admin:
+        hashed_password = bcrypt.generate_password_hash(admin_password).decode('utf-8')
+        admin = User(username=admin_username, password=hashed_password)
+        db.session.add(admin)
+        db.session.commit()
+
+
+if __name__ == "__main__":
+    # Create the database tables (including the User and Event tables)
+    db.create_all()
+
+    # Create the admin user if it doesn't exist
+    create_admin()
+
+    app.run(debug=True)

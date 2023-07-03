@@ -119,11 +119,10 @@ def create_admin():
         db.session.commit()
 
 
-if __name__ == "__main__":
-    # Create the database tables (including the User and Event tables)
-    db.create_all()
 
-    # Create the admin user if it doesn't exist
-    create_admin()
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
+        create_admin()  # Call the function to create the admin user
 
     app.run(debug=True)

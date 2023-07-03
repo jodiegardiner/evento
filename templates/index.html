@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events Calendar</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .event-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .logout-link {
+            margin-top: 10px;
+        }
+        .add-event-form {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="event-container">
+        <h1>Welcome{{ ' ' + current_user if current_user else '' }}!</h1>
+
+        {% if current_user %}
+            <a class="logout-link" href="{{ url_for('logout') }}">Logout</a>
+            <h2>Events:</h2>
+            <ul class="list-group">
+                {% for event in events %}
+                    <li class="list-group-item">{{ event }}</li>
+                {% endfor %}
+            </ul>
+
+            <form class="add-event-form" method="post">
+                <div class="form-group">
+                    <label for="event">Add Event:</label>
+                    <input class="form-control" type="text" name="event" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        {% else %}
+            <h2>Please log in to access the calendar.</h2>
+            <form method="post" action="{{ url_for('login') }}">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input class="form-control" type="text" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input class="form-control" type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS (optional, needed for some Bootstrap features) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
